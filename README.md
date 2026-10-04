@@ -1,2 +1,2 @@
 # Capi2
-Pagina web de mate
+Una plataforma divertida
