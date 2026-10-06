@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /api/
-Sitemap: https://yessica18.github.io/Capi2/sitemap.xml
