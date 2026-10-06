@@ -1,7 +1,11 @@
 // CAPICÚA — Service worker: abre al instante en visitas repetidas y funciona sin conexión.
-const V = 'capicua-f62e064fa3';
-const CORE = ['./', 'index.html', 'manifest.webmanifest', 'marca/capia-icono.svg', 'marca/icon-192.png'];
-self.addEventListener('install', (e) => { e.waitUntil(caches.open(V).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });
+// Todas las rutas son relativas para que funcione bajo https://yessica18.github.io/Capi2/
+const V = 'capicua-2.0.0';
+const CORE = ['./', 'index.html', 'manifest.webmanifest', 'capicua-plus.css?v=2.0.0', 'capicua-plus.js?v=2.0.0', 'marca/capia-icono.svg', 'marca/icon-192.png'];
+self.addEventListener('install', (e) => {
+  // Cada archivo se guarda por separado: si uno falla, el resto igual queda en caché.
+  e.waitUntil(caches.open(V).then(c => Promise.all(CORE.map(u => c.add(u).catch(() => null)))).then(() => self.skipWaiting()));
+});
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', (e) => {
   const req = e.request; if (req.method !== 'GET') return; const url = new URL(req.url);
